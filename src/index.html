@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bootstrap demo</title>
+    <link href="3rdparty/bootstrap-5.3.3-dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="main.css" rel="stylesheet" />
+    <script src ="main.js"></script>
+  </head>
+  <body>
+    <main>
+        <div id="wrapper">
+            <div id="box-scope">[scope]</div>
+            <div id="box-preview">
+                <div id="source-pages">
+                    <div id="source-list">
+                        <p>
+                            <button class="btn btn-primary" onclick="listCameras(); return false;">Use a camera</button>
+                            <button class="btn btn-primary">Open a photo or video</button>
+                        </p>
+                    </div>
+                    <div id="source-cameras">
+                        <select id="camera-list" class="form-select" onchange="selectCamera()">
+                            <option value="none">Loading...</option>
+                        </select>
+                        <button class="btn btn-secondary" onclick="resetSource()">Select another source</button>
+                    </div>
+                    <div id="source-main">
+                        <canvas id="canvas1"></canvas><br/>
+                        <div class="buttons">
+                            <button class="btn btn-secondary" onclick="resetSource()">Select another source</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="box-menu">
+                <ul class="nav nav-pills" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active" id="home-tab" data-bs-toggle="pill" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Setup</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link" id="profile-tab" data-bs-toggle="pill" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Inspect</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link" id="contact-tab" data-bs-toggle="pill" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">More</button>
+                    </li>
+                  </ul>
+                  <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <form onsubmit="return false;">
+                            <div class="form-group">
+                                <label for="profile" class="form-label">Profile</label>
+                                <select id="profile" class="form-select">
+                                    <option selected>Default</option>
+                                    <option value="1">Other one</option>
+                                </select>
+                                <button class="btn btn-primary">Add new profile</button>
+                            </div>
+
+                            <br/>
+
+                            <label for="range1" class="form-label">Rotation</label>
+                            <input id="range1" type="range" class="form-range" min="-180" max="180" value="0" />
+                            <label for="range2" class="form-label">Position X</label>
+                            <input id="range2" type="range" class="form-range" min="-180" max="180" value="0" />
+                            <label for="range3" class="form-label">Position Y</label>
+                            <input id="range3" type="range" class="form-range" min="-180" max="180" value="0" />
+                        </form>
+                    </div>
+                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        Inspect here
+                    </div>
+                    <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                        Compose
+                    </div>
+                  </div>
+            </div>
+            <div id="box-footer">This is a blah-blah <a href="about:blank">spectro-web-wip</a> read the <a href="about:blank">blog post</a> about it.</div>
+        </div>
+    </main>
+    <script src="3rdparty/bootstrap-5.3.3-dist/js/bootstrap.bundle.js"></script>
+  </body>
+</html>
