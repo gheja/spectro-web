@@ -3,15 +3,16 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Bootstrap demo</title>
+    <title>spectro-web-wip</title>
     <link href="3rdparty/bootstrap-5.3.3-dist/css/bootstrap.css" rel="stylesheet" />
     <link href="main.css" rel="stylesheet" />
     <script src ="main.js"></script>
+    <script src ="spectro.js"></script>
   </head>
   <body>
     <main>
         <div id="wrapper">
-            <div id="box-scope">[scope]</div>
+            <div id="box-scope"><canvas id="canvas2"></canvas></div>
             <div id="box-preview">
                 <div id="source-pages">
                     <div id="source-list">
@@ -24,13 +25,13 @@
                         <select id="camera-list" class="form-select" onchange="selectCamera()">
                             <option value="none">Loading...</option>
                         </select>
+                        <br/>
                         <button class="btn btn-secondary" onclick="resetSource()">Select another source</button>
                     </div>
                     <div id="source-main">
-                        <canvas id="canvas1"></canvas><br/>
-                        <div class="buttons">
-                            <button class="btn btn-secondary" onclick="resetSource()">Select another source</button>
-                        </div>
+                        <canvas id="canvas1"></canvas>
+                        <br/>
+                        <button class="btn btn-secondary" onclick="resetSource()">Select another source</button>
                     </div>
                 </div>
             </div>
@@ -60,12 +61,17 @@
 
                             <br/>
 
-                            <label for="range1" class="form-label">Rotation</label>
-                            <input id="range1" type="range" class="form-range" min="-180" max="180" value="0" />
-                            <label for="range2" class="form-label">Position X</label>
-                            <input id="range2" type="range" class="form-range" min="-180" max="180" value="0" />
-                            <label for="range3" class="form-label">Position Y</label>
-                            <input id="range3" type="range" class="form-range" min="-180" max="180" value="0" />
+                            <label for="setting_rotation" class="form-label">Rotation</label>
+                            <input id="setting_rotation" type="range" class="form-range" min="-1.0" max="1.0" step="0.005" value="0" onchange="updateSettings()" oninput="updateSettings()" />
+
+                            <label for="setting_pad_x" class="form-label">Position X</label>
+                            <input id="setting_pad_x" type="range" class="form-range" min="-1.0" max="1.0" step="0.001" value="0" onchange="updateSettings()" oninput="updateSettings()" />
+
+                            <label for="setting_pad_y" class="form-label">Position Y</label>
+                            <input id="setting_pad_y" type="range" class="form-range" min="-1.0" max="1.0" step="0.001" value="0" onchange="updateSettings()" oninput="updateSettings()" />
+
+                            <label for="setting_scale" class="form-label">Scale</label>
+                            <input id="setting_scale" type="range" class="form-range" min="0.1" max="10.0" step="0.01" value="1.0" onchange="updateSettings()" oninput="updateSettings()" />
                         </form>
                     </div>
                     <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
