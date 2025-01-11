@@ -14,6 +14,7 @@ var _settings = {
 var _source = null
 
 var _pixelValues = []
+var _scopeData = []
 var _imageCanvas
 var _imageCtx
 var _scopeCanvas
@@ -41,6 +42,7 @@ function spectroRenderAndProcess()
 
     updateImageProperties()
     extractImageData()
+    processData()
     drawOverlay()
     drawScope()
 }
@@ -171,6 +173,56 @@ function extractImageData()
     }
 }
 
+function normalize(arr)
+{
+    var min = arr[0]
+    var max = arr[0]
+    var result = []
+
+    for (var i=0; i<arr.length; i++)
+    {
+        if (arr[i] < min)
+        {
+            min = arr[i]
+        }
+        else if (arr[i] > max)
+        {
+            max = arr[i]
+        }
+    }
+
+    if (min == 0)
+    {
+        min = 0.0001
+    }
+
+    var r = max - min
+
+    if (r == 0)
+    {
+        r = 0.0001
+    }
+
+    for (var i=0; i<arr.length; i++)
+    {
+        result.push((arr[i] - min) / r)
+    }
+
+    return result
+}
+
+function processData()
+{
+    _scopeData = []
+
+    for (var i=0; i<SAMPLE_COUNT; i++)
+    {
+        _scopeData.push(_pixelValues[i][0] + _pixelValues[i][1] + _pixelValues[i][2])
+    }
+
+    _scopeData = normalize(_scopeData)
+}
+
 /** Draw the overlay over the processed image */
 function drawOverlay()
 {
@@ -284,7 +336,7 @@ function drawScope()
     _scopeCtx.moveTo(0, 300)
     for (var i=0; i<SAMPLE_COUNT; i++)
     {
-        _scopeCtx.lineTo(i, 300 - (_pixelValues[i][0] + _pixelValues[i][1] + _pixelValues[i][2]) / 3)
+        _scopeCtx.lineTo(i, 300 - _scopeData[i] * 255)
     }
     _scopeCtx.strokeStyle = "#eee"
     _scopeCtx.stroke()
