@@ -18,11 +18,18 @@
                 <div id="source-pages">
                     <div id="source-list">
                         <p>
-                            Frist select a source to process. No data will be sent to any servers, the site is running entirerily in your browser.
+                            <button class="btn btn-primary" onclick="listCameras(); return false;">Use a camera</button>
+                            <button class="btn btn-disabled" disabled>Open a photo or video</button>
+                            <button class="btn btn-disabled" disabled>Paste from clipboard</button>
                         </p>
                         <p>
-                            <button class="btn btn-primary" onclick="listCameras(); return false;">Use a camera</button>
-                            <button class="btn btn-primary">Open a photo or video</button>
+                            Select a source to process. This page is running entirely in your browser, no data will be sent to any servers.
+                        </p>
+                        <p>
+                            Currently only the Camera source is supported.
+                        </p>
+                        <p>
+                            After selecting the source, complete the Source setup and Spectrum calibration steps on the right, then you can start to Inspect.
                         </p>
                     </div>
                     <div id="source-cameras">
@@ -54,26 +61,22 @@
                   <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="setup-page" role="tabpanel" aria-labelledby="setup-page-tab">
                         <form onsubmit="return false;">
-                            <div class="form-group">
-                                <label for="profile" class="form-label">Profile</label>
-                                <select id="profile" class="form-select">
-                                    <option selected>Default</option>
-                                    <option value="1">Other one</option>
-                                </select>
-                                <button class="btn btn-primary">Add new profile</button>
-                            </div>
+                            <div>
+                                <h2>Profile</h2>
 
-                            <br/>
+                                <div class="form-group">
+                                    <select id="profile" class="form-select">
+                                        <option selected>Default</option>
+                                    </select>
+                                    <button class="btn btn-disabled" disabled>Add new profile</button>
+                                </div>
+                            </div>
 
                             <div onmouseenter="setScopeMode(1)">
                                 <h2>Source setup</h2>
 
                                 <p>
                                     In this section you define the location and orientation of the projected image on the source material. Try to contain the whole projected rainbow, with the blue and red markers at the correct ends of it. Keep a bit of extra space on both ends.
-                                </p>
-
-                                <p>
-                                    You only need to do this once.
                                 </p>
 
                                 <label for="setting_rotation" class="form-label">Rotation</label>
@@ -93,7 +96,11 @@
                                 <h2>Spectrum calibration</h2>
                                 
                                 <p>
-                                    In this section you you need to match the displayed spectrum to a known one to calibrate the markings and the wavelengths.
+                                    Match the displayed spectrum to a known one to calibrate the markings and the wavelengths.
+                                </p>
+
+                                <p>
+                                    You only need to do this once.
                                 </p>
 
                                 <label for="calibration_reference" class="form-label">Reference spectrum</label>
@@ -111,22 +118,28 @@
                                     When your spectrum matches the reference as close as possible, set the multipliers here to account for the possible inaccuracies of the sensor used on the source.
                                 </p>
 
-                                <button class="btn btn-primary" onclick="setMultipliers(1.0)">Fit multipliers</button>
-                                <button class="btn btn-primary" onclick="setMultipliers(0.0)">Reset multipliers</button><br/>
-                                <br/>
+                                <p>
+                                    <button class="btn btn-primary" onclick="setMultipliers(1.0)">Fit multipliers</button>
+                                    <button class="btn btn-primary" onclick="setMultipliers(0.0)">Reset multipliers</button>
+                                </p>
+
+                                <p>
+                                    When done, click the button below. This is just a shortcut to Inspect tab, you can come back here by selecting the Setup tab again.
+                                </p>
+
                                 <button class="btn btn-primary" onclick="calibrationDone()">Done</button>
                             </div>
                         </form>
                     </div>
                     <div class="tab-pane fade" id="inspect-page" role="tabpanel" aria-labelledby="inspect-page-tab">
-                        Inspect here
+                        TODO: Inspect tools
                     </div>
                     <div class="tab-pane fade" id="more-page" role="tabpanel" aria-labelledby="more-page-tab">
-                        Compose
+                        TODO: Compose, etc.
                     </div>
                   </div>
             </div>
-            <div id="box-footer">This is a blah-blah <a href="about:blank">spectro-web-wip</a> read the <a href="about:blank">blog post</a> about it.</div>
+            <div id="box-footer">This is the open source <a href="https://github.com/gheja/spectro-web">spectro-web</a> project by Gabor Heja, 2025.</div>
         </div>
     </main>
     <script src="3rdparty/bootstrap-5.3.3-dist/js/bootstrap.bundle.js"></script>
