@@ -10,6 +10,11 @@ var _settings = {
     scale: 1.0,
 }
 
+var _calibrationSettings = {
+    padX: 0,
+    scale: 1.0,
+}
+
 // the scope is tuned the visible spectrum by default
 var _scopeSettings = {
     middle: 565,
@@ -59,6 +64,9 @@ function updateSettings(newScopeMode)
     _settings.scale = parseFloat(document.getElementById('setting_scale').value)
 
     // calibration stuffs
+    _calibrationSettings.padX = parseFloat(document.getElementById('calibration_slide').value)
+    _calibrationSettings.scale = parseFloat(document.getElementById('calibration_scale').value)
+
     var a = document.getElementById("calibration_reference").value
     if (a == "none")
     {
@@ -259,11 +267,38 @@ function normalize(arr)
 
 function processData()
 {
-    _scopeData = []
+    var a = []
 
     for (var i=0; i<SAMPLE_COUNT; i++)
     {
-        _scopeData.push(_pixelValues[i][0] + _pixelValues[i][1] + _pixelValues[i][2])
+        a.push(_pixelValues[i][0] + _pixelValues[i][1] + _pixelValues[i][2])
+    }
+
+    // adjust for calibration settings
+    if (_scopeMode > 1)
+    {
+        var j
+        for (var i=0; i<SAMPLE_COUNT; i++)
+        {
+            // calculate the correct position
+            j = (i - 1000) / _calibrationSettings.scale + 1000
+            j = j - _calibrationSettings.padX
+            j = Math.round(j)
+
+            // filter invalid data points
+            if (j >= 0 && j < 2000)
+            {
+                _scopeData[i] = a[j]
+            }
+            else
+            {
+                _scopeData[i] = 0
+            }
+        }
+    }
+    else
+    {
+        _scopeData = a
     }
 
     _scopeData = normalize(_scopeData)
