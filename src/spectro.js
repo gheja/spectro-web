@@ -10,7 +10,7 @@ var _settings = {
     scale: 1.0,
 }
 
-// the scope is tuned to the referenc image by default, that is the whole visible spectrum
+// the scope is tuned the visible spectrum by default
 var _scopeSettings = {
     middle: 565,
     width: 370,
@@ -347,7 +347,7 @@ function drawScopeV1()
 {
     _scopeCtx.lineWidth = 2
     
-    _scopeCtx.fillStyle = "#0001"
+    _scopeCtx.fillStyle = "#0002"
     _scopeCtx.fillRect(0, 0, 2000, 300)
 
     _scopeCtx.beginPath()
