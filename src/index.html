@@ -42,17 +42,17 @@
             <div id="box-menu">
                 <ul class="nav nav-pills" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
-                      <button class="nav-link active" id="home-tab" data-bs-toggle="pill" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Setup</button>
+                      <button class="nav-link active" id="setup-page-tab" data-bs-toggle="pill" data-bs-target="#setup-page" type="button" role="tab" aria-controls="home" aria-selected="true" onclick="setScopeMode(1)">Setup</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                      <button class="nav-link" id="profile-tab" data-bs-toggle="pill" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Inspect</button>
+                      <button class="nav-link" id="inspect-page-tab" data-bs-toggle="pill" data-bs-target="#inspect-page" type="button" role="tab" aria-controls="profile" aria-selected="false" onclick="setScopeMode(3)">Inspect</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                      <button class="nav-link" id="contact-tab" data-bs-toggle="pill" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">More</button>
+                      <button class="nav-link" id="more-page-tab" data-bs-toggle="pill" data-bs-target="#more-page" type="button" role="tab" aria-controls="contact" aria-selected="false">More</button>
                     </li>
                   </ul>
                   <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="tab-pane fade show active" id="setup-page" role="tabpanel" aria-labelledby="setup-page-tab">
                         <form onsubmit="return false;">
                             <div class="form-group">
                                 <label for="profile" class="form-label">Profile</label>
@@ -65,58 +65,63 @@
 
                             <br/>
 
-                            <h2>-- Setup --</h2>
+                            <div onmouseenter="setScopeMode(1)">
+                                <h2>Source setup</h2>
 
-                            <p>
-                                In this section you define the location and orientation of the projected image on the source material. Try to contain the whole projected rainbow, with the blue and red markers at the correct ends of it. Keep a bit of extra space on both ends.
-                            </p>
+                                <p>
+                                    In this section you define the location and orientation of the projected image on the source material. Try to contain the whole projected rainbow, with the blue and red markers at the correct ends of it. Keep a bit of extra space on both ends.
+                                </p>
 
-                            <p>
-                                You only need to do this once.
-                            </p>
+                                <p>
+                                    You only need to do this once.
+                                </p>
 
-                            <label for="setting_rotation" class="form-label">Rotation</label>
-                            <input id="setting_rotation" type="range" class="form-range" min="-1.0" max="1.0" step="0.005" value="0" onchange="updateSettings(1)" oninput="updateSettings(1)" />
+                                <label for="setting_rotation" class="form-label">Rotation</label>
+                                <input id="setting_rotation" type="range" class="form-range" min="-1.0" max="1.0" step="0.005" value="0" onchange="updateSettings(1)" oninput="updateSettings(1)" />
 
-                            <label for="setting_pad_x" class="form-label">Position X</label>
-                            <input id="setting_pad_x" type="range" class="form-range" min="-1.0" max="1.0" step="0.001" value="0" onchange="updateSettings(1)" oninput="updateSettings(1)" />
+                                <label for="setting_pad_x" class="form-label">Position X</label>
+                                <input id="setting_pad_x" type="range" class="form-range" min="-1.0" max="1.0" step="0.001" value="0" onchange="updateSettings(1)" oninput="updateSettings(1)" />
 
-                            <label for="setting_pad_y" class="form-label">Position Y</label>
-                            <input id="setting_pad_y" type="range" class="form-range" min="-1.0" max="1.0" step="0.001" value="0" onchange="updateSettings(1)" oninput="updateSettings(1)" />
+                                <label for="setting_pad_y" class="form-label">Position Y</label>
+                                <input id="setting_pad_y" type="range" class="form-range" min="-1.0" max="1.0" step="0.001" value="0" onchange="updateSettings(1)" oninput="updateSettings(1)" />
 
-                            <label for="setting_scale" class="form-label">Scale</label>
-                            <input id="setting_scale" type="range" class="form-range" min="0.01" max="5.0" step="0.01" value="1.0" onchange="updateSettings(1)" oninput="updateSettings(1)" />
+                                <label for="setting_scale" class="form-label">Scale</label>
+                                <input id="setting_scale" type="range" class="form-range" min="0.01" max="5.0" step="0.01" value="1.0" onchange="updateSettings(1)" oninput="updateSettings(1)" />
+                            </div>
 
-                            <h2>-- Calibration --</h2>
-                            
-                            <p>
-                                In this section you you need to match the displayed spectrum to a known one to calibrate the markings and the wavelengths.
-                            </p>
+                            <div onmouseenter="setScopeMode(2)">
+                                <h2>Spectrum calibration</h2>
+                                
+                                <p>
+                                    In this section you you need to match the displayed spectrum to a known one to calibrate the markings and the wavelengths.
+                                </p>
 
-                            <label for="calibration_reference" class="form-label">Reference spectrum</label>
-                            <select id="calibration_reference" class="form-select" onchange="updateSettings(2)" oninput="updateSettings(2)" onmouseenter="updateSettings(2)">
-                                <option selected value="none">Select a reference...</option>
-                            </select>
+                                <label for="calibration_reference" class="form-label">Reference spectrum</label>
+                                <select id="calibration_reference" class="form-select" onchange="updateSettings(2)" oninput="updateSettings(2)" onmouseenter="updateSettings(2)">
+                                    <option selected value="none">Select a reference...</option>
+                                </select>
 
-                            <label for="calibration_slide" class="form-label">Slide</label>
-                            <input id="calibration_slide" type="range" class="form-range" min="-300" max="300" step="0.1" value="0.0" onchange="updateSettings(2)" oninput="updateSettings(2)" />
+                                <label for="calibration_slide" class="form-label">Slide</label>
+                                <input id="calibration_slide" type="range" class="form-range" min="-300" max="300" step="0.1" value="0.0" onchange="updateSettings(2)" oninput="updateSettings(2)" />
 
-                            <label for="calibration_scale" class="form-label">Scale</label>
-                            <input id="calibration_scale" type="range" class="form-range" min="0.5" max="2.0" step="0.01" value="1.0" onchange="updateSettings(2)" oninput="updateSettings(2)" />
+                                <label for="calibration_scale" class="form-label">Scale</label>
+                                <input id="calibration_scale" type="range" class="form-range" min="0.5" max="2.0" step="0.01" value="1.0" onchange="updateSettings(2)" oninput="updateSettings(2)" />
 
-                            <p>
-                                When your spectrum matches the reference as close as possible, set the multipliers here to account for the possible inaccuracies of the sensor used on the source.
-                            </p>
+                                <p>
+                                    When your spectrum matches the reference as close as possible, set the multipliers here to account for the possible inaccuracies of the sensor used on the source.
+                                </p>
 
-                            <button class="btn btn-primary" onclick="setMultipliers(1.0)">Fit multipliers</button>
-                            <button class="btn btn-primary" onclick="setMultipliers(0.0)">Reset multipliers</button>
-
+                                <button class="btn btn-primary" onclick="setMultipliers(1.0)">Fit multipliers</button>
+                                <button class="btn btn-primary" onclick="setMultipliers(0.0)">Reset multipliers</button><br/>
+                                <br/>
+                                <button class="btn btn-primary" onclick="calibrationDone()">Done</button>
+                            </div>
                         </form>
                     </div>
-                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <div class="tab-pane fade" id="inspect-page" role="tabpanel" aria-labelledby="inspect-page-tab">
                         Inspect here
                     </div>
-                    <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                    <div class="tab-pane fade" id="more-page" role="tabpanel" aria-labelledby="more-page-tab">
                         Compose
                     </div>
                   </div>

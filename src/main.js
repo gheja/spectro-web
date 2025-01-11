@@ -141,6 +141,12 @@ function referenceInit()
     }
 }
 
+/** Called when the user clicks the button at the bottom of the Calibration page */
+function calibrationDone()
+{
+    document.getElementById("inspect-page-tab").click()
+}
+
 /** Initialize all the required stuffs */
 function init()
 {
