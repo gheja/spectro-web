@@ -16,6 +16,13 @@ var _scopeSettings = {
     width: 370,
 }
 
+// the image that contains the visible spectrum, 380-750 nm
+var _spectrumImageOverlaySettings = {
+    url: './visible_spectrum.png',
+    middle: 565,
+    width: 370,
+}
+
 /** The source object to get the image from */
 var _source = null
 
@@ -28,6 +35,9 @@ var _scopeCanvas
 var _scopeCtx
 var _scopeMode
 var _p = 0.2 // width of the window, in virtual coordinate unit
+
+// the DOM object storing the image
+var _spectrumImageImg
 
 function setScopeMode(newScopeMode)
 {
@@ -121,6 +131,10 @@ function spectroInit()
     _scopeCanvas.width = 2000
     _scopeCanvas.height = 300
     _scopeCtx = _scopeCanvas.getContext('2d')
+
+    // load the image in async, check later
+    _spectrumImageImg = document.createElement("img")
+    _spectrumImageImg.src = _spectrumImageOverlaySettings.url
 
     setScopeMode(1)
 
@@ -403,7 +417,20 @@ function drawScopeV2()
         {
             _scopeCtx.lineTo(i, 300 - _referenceScopeData[i] * 255)
         }
-        _scopeCtx.strokeStyle = "#ee0"
+
+        _scopeCtx.lineTo(2000, 300)
+
+        // clip the image to the reference spectrum
+        _scopeCtx.save()
+        _scopeCtx.clip()
+        if (_spectrumImageImg.complete)
+        {
+            _scopeCtx.drawImage(_spectrumImageImg, 0, 0, _spectrumImageImg.width, _spectrumImageImg.height, 0, 0, 2000, 300)
+        }
+        _scopeCtx.restore()
+
+        // draw the reference spectrum
+        _scopeCtx.strokeStyle = "#333"
         _scopeCtx.stroke()
     }
 
