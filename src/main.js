@@ -126,11 +126,27 @@ async function startCamera(deviceId)
     });
 }
 
+/** Populate the "Reference spectrum" list on the Calibration page */
+function referenceInit()
+{
+    var select = document.getElementById("calibration_reference")
+
+    for (var i=0; i<REFERENCE_SPECTRUMS.length; i++)
+    {
+        var option = document.createElement("option")
+        option.value = i
+        option.innerHTML = REFERENCE_SPECTRUMS[i].name
+
+        select.appendChild(option)
+    }
+}
+
 /** Initialize all the required stuffs */
 function init()
 {
     _cameraVideo = document.createElement("video")
     switchPage("source-pages", "source-list")
+    referenceInit()
     spectroInit()
 }
 

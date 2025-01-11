@@ -6,6 +6,7 @@
     <title>spectro-web-wip</title>
     <link href="3rdparty/bootstrap-5.3.3-dist/css/bootstrap.css" rel="stylesheet" />
     <link href="main.css" rel="stylesheet" />
+    <script src ="reference_spectrums.js"></script>
     <script src ="main.js"></script>
     <script src ="spectro.js"></script>
   </head>
@@ -85,6 +86,31 @@
 
                             <label for="setting_scale" class="form-label">Scale</label>
                             <input id="setting_scale" type="range" class="form-range" min="0.01" max="5.0" step="0.01" value="1.0" onchange="updateSettings(1)" oninput="updateSettings(1)" />
+
+                            <h2>-- Calibration --</h2>
+                            
+                            <p>
+                                In this section you you need to match the displayed spectrum to a known one to calibrate the markings and the wavelengths.
+                            </p>
+
+                            <label for="calibration_reference" class="form-label">Reference spectrum</label>
+                            <select id="calibration_reference" class="form-select" onchange="updateSettings(2)" oninput="updateSettings(2)" onmouseenter="updateSettings(2)">
+                                <option selected value="none">Select a reference...</option>
+                            </select>
+
+                            <label for="setting_slide" class="form-label">Slide</label>
+                            <input id="setting_slide" type="range" class="form-range" min="-300" max="300" step="0.1" value="0.0" onchange="updateSettings(2)" oninput="updateSettings(2)" />
+
+                            <label for="setting_scale2" class="form-label">Scale</label>
+                            <input id="setting_scale2" type="range" class="form-range" min="0.5" max="2.0" step="0.01" value="1.0" onchange="updateSettings(2)" oninput="updateSettings(2)" />
+
+                            <p>
+                                When your spectrum matches the reference as close as possible, set the multipliers here to account for the possible inaccuracies of the sensor used on the source.
+                            </p>
+
+                            <button class="btn btn-primary" onclick="setMultipliers(1.0)">Fit multipliers</button>
+                            <button class="btn btn-primary" onclick="setMultipliers(0.0)">Reset multipliers</button>
+
                         </form>
                     </div>
                     <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">

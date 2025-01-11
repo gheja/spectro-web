@@ -10,11 +10,18 @@ var _settings = {
     scale: 1.0,
 }
 
+// the scope is tuned to the referenc image by default, that is the whole visible spectrum
+var _scopeSettings = {
+    middle: 565,
+    width: 370,
+}
+
 /** The source object to get the image from */
 var _source = null
 
 var _pixelValues = []
 var _scopeData = []
+var _referenceScopeData = []
 var _imageCanvas
 var _imageCtx
 var _scopeCanvas
@@ -40,6 +47,17 @@ function updateSettings(newScopeMode)
     _settings.padX = parseFloat(document.getElementById('setting_pad_x').value)
     _settings.padY = parseFloat(document.getElementById('setting_pad_y').value)
     _settings.scale = parseFloat(document.getElementById('setting_scale').value)
+
+    // calibration stuffs
+    var a = document.getElementById("calibration_reference").value
+    if (a == "none")
+    {
+        _referenceScopeData = []
+    }
+    else
+    {
+        _referenceScopeData = normalize(REFERENCE_SPECTRUMS[a].values)
+    }
 }
 
 /** Render the preview with the overlays, gather the data, process it and then display it */
@@ -318,6 +336,10 @@ function drawScope()
     {
         drawScopeV1()
     }
+    else if (_scopeMode == 2)
+    {
+        drawScopeV2()
+    }
 }
 
 /** Draw the basic RGB scope */
@@ -354,6 +376,36 @@ function drawScopeV1()
     }
     _scopeCtx.strokeStyle = "#00a"
     _scopeCtx.stroke()
+
+    _scopeCtx.beginPath()
+    _scopeCtx.moveTo(0, 300)
+    for (var i=0; i<SAMPLE_COUNT; i++)
+    {
+        _scopeCtx.lineTo(i, 300 - _scopeData[i] * 255)
+    }
+    _scopeCtx.strokeStyle = "#eee"
+    _scopeCtx.stroke()
+}
+
+/** Draw the calibration scope */
+function drawScopeV2()
+{
+    _scopeCtx.lineWidth = 2
+    
+    _scopeCtx.fillStyle = "#0002"
+    _scopeCtx.fillRect(0, 0, 2000, 300)
+
+    if (_referenceScopeData.length > 0)
+    {
+        _scopeCtx.beginPath()
+        _scopeCtx.moveTo(0, 300)
+        for (var i=0; i<SAMPLE_COUNT; i++)
+        {
+            _scopeCtx.lineTo(i, 300 - _referenceScopeData[i] * 255)
+        }
+        _scopeCtx.strokeStyle = "#ee0"
+        _scopeCtx.stroke()
+    }
 
     _scopeCtx.beginPath()
     _scopeCtx.moveTo(0, 300)
