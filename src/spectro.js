@@ -389,6 +389,10 @@ function drawScope()
     {
         drawScopeV2()
     }
+    else if (_scopeMode == 3)
+    {
+        drawScopeV3()
+    }
 }
 
 /** Draw the basic RGB scope */
@@ -477,6 +481,38 @@ function drawScopeV2()
     }
 
     _scopeCtx.strokeStyle = "#eee"
+    _scopeCtx.lineWidth = 2
+    _scopeCtx.stroke()
+}
+
+/** Draw the final scope */
+function drawScopeV3()
+{
+    _scopeCtx.fillStyle = "#222"
+    _scopeCtx.fillRect(0, 0, 2000, 300)
+
+    _scopeCtx.lineWidth = 2
+
+    _scopeCtx.beginPath()
+    _scopeCtx.moveTo(0, 300)
+    for (var i=0; i<SAMPLE_COUNT; i++)
+    {
+        _scopeCtx.lineTo(i, 300 - _scopeData[i] * 255)
+    }
+
+    _scopeCtx.lineTo(2000, 300)
+
+    // clip the image to the spectrum
+    _scopeCtx.save()
+    _scopeCtx.clip()
+    if (_spectrumImageImg.complete)
+    {
+        _scopeCtx.drawImage(_spectrumImageImg, 0, 0, _spectrumImageImg.width, _spectrumImageImg.height, 0, 0, 2000, 300)
+    }
+    _scopeCtx.restore()
+
+    // draw the spectrum
+    _scopeCtx.strokeStyle = "#fff"
     _scopeCtx.lineWidth = 2
     _scopeCtx.stroke()
 }
