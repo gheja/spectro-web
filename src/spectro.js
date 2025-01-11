@@ -19,11 +19,23 @@ var _imageCanvas
 var _imageCtx
 var _scopeCanvas
 var _scopeCtx
+var _scopeMode
 var _p = 0.2 // width of the window, in virtual coordinate unit
 
-/** Update the settings based on the user supplied values on the Setup page */
-function updateSettings()
+function setScopeMode(newScopeMode)
 {
+    if (_scopeMode != newScopeMode)
+    {
+        // TODO: show message about new mode
+        _scopeMode = newScopeMode
+    }
+}
+
+/** Update the settings based on the user supplied values on the Setup page */
+function updateSettings(newScopeMode)
+{
+    setScopeMode(newScopeMode)
+
     _settings.rotation = parseFloat(document.getElementById('setting_rotation').value) * Math.PI * 2
     _settings.padX = parseFloat(document.getElementById('setting_pad_x').value)
     _settings.padY = parseFloat(document.getElementById('setting_pad_y').value)
@@ -91,6 +103,8 @@ function spectroInit()
     _scopeCanvas.width = 2000
     _scopeCanvas.height = 300
     _scopeCtx = _scopeCanvas.getContext('2d')
+
+    setScopeMode(1)
 
     window.requestAnimationFrame(spectroFrame)
 }
@@ -299,6 +313,15 @@ function drawOverlay()
 
 /** Draw the updated scope */
 function drawScope()
+{
+    if (_scopeMode == 1)
+    {
+        drawScopeV1()
+    }
+}
+
+/** Draw the basic RGB scope */
+function drawScopeV1()
 {
     _scopeCtx.lineWidth = 2
     
