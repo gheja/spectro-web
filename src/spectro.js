@@ -396,7 +396,7 @@ function drawScopeV1()
 {
     _scopeCtx.lineWidth = 2
     
-    _scopeCtx.fillStyle = "#0002"
+    _scopeCtx.fillStyle = "#000"
     _scopeCtx.fillRect(0, 0, 2000, 300)
 
     _scopeCtx.beginPath()
@@ -439,9 +439,7 @@ function drawScopeV1()
 /** Draw the calibration scope */
 function drawScopeV2()
 {
-    _scopeCtx.lineWidth = 2
-    
-    _scopeCtx.fillStyle = "#0002"
+    _scopeCtx.fillStyle = "#323"
     _scopeCtx.fillRect(0, 0, 2000, 300)
 
     if (_referenceScopeData.length > 0)
@@ -465,16 +463,20 @@ function drawScopeV2()
         _scopeCtx.restore()
 
         // draw the reference spectrum
-        _scopeCtx.strokeStyle = "#333"
+        _scopeCtx.strokeStyle = "#000"
+        _scopeCtx.lineWidth = 4
         _scopeCtx.stroke()
     }
 
+    // draw the spectrum
     _scopeCtx.beginPath()
     _scopeCtx.moveTo(0, 300)
     for (var i=0; i<SAMPLE_COUNT; i++)
     {
         _scopeCtx.lineTo(i, 300 - _scopeData[i] * 255)
     }
+
     _scopeCtx.strokeStyle = "#eee"
+    _scopeCtx.lineWidth = 2
     _scopeCtx.stroke()
 }
