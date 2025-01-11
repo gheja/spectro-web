@@ -79,3 +79,12 @@
 {
     height: 30vh;
 }
+
+.unstable
+{
+    opacity: 0.8;
+    background: #ff01;
+    border: 1px solid #ff02;
+    border-radius: 0.25em;
+    padding: 1em;
+}

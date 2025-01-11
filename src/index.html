@@ -114,14 +114,20 @@
                                 <label for="calibration_scale" class="form-label">Scale</label>
                                 <input id="calibration_scale" type="range" class="form-range" min="0.5" max="2.0" step="0.01" value="1.0" onchange="updateSettings(2)" oninput="updateSettings(2)" />
 
-                                <p>
-                                    When your spectrum matches the reference as close as possible, set the multipliers here to account for the possible inaccuracies of the sensor used on the source.
-                                </p>
+                                <div class="unstable">
+                                    <p>
+                                        <em>This part is unstable, you probably don't want to use it yet.</em>
+                                    </p>
 
-                                <p>
-                                    <button class="btn btn-primary" id="correction-on-button" onclick="setCorrectionFactors(1.0)">Fit multipliers</button>
-                                    <button class="btn btn-secondary" id="correction-off-button" onclick="setCorrectionFactors(0.0)" disabled>Reset multipliers</button>
-                                </p>
+                                    <p>
+                                        When your spectrum matches the reference as close as possible, set the multipliers here to account for the possible inaccuracies of the sensor used on the source.
+                                    </p>
+
+                                    <p>
+                                        <button class="btn btn-primary" id="correction-on-button" onclick="setCorrectionFactors(1.0)">Fit multipliers</button>
+                                        <button class="btn btn-secondary" id="correction-off-button" onclick="setCorrectionFactors(0.0)" disabled>Reset multipliers</button>
+                                    </p>
+                                </div>
 
                                 <p>
                                     When done, click the button below. This is just a shortcut to Inspect tab, you can come back here by selecting the Setup tab again.
