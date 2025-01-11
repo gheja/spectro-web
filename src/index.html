@@ -64,17 +64,27 @@
 
                             <br/>
 
+                            <h2>-- Setup --</h2>
+
+                            <p>
+                                In this section you define the location and orientation of the projected image on the source material. Try to contain the whole projected rainbow, with the blue and red markers at the correct ends of it. Keep a bit of extra space on both ends.
+                            </p>
+
+                            <p>
+                                You only need to do this once.
+                            </p>
+
                             <label for="setting_rotation" class="form-label">Rotation</label>
-                            <input id="setting_rotation" type="range" class="form-range" min="-1.0" max="1.0" step="0.005" value="0" onchange="updateSettings()" oninput="updateSettings()" />
+                            <input id="setting_rotation" type="range" class="form-range" min="-1.0" max="1.0" step="0.005" value="0" onchange="updateSettings(1)" oninput="updateSettings(1)" />
 
                             <label for="setting_pad_x" class="form-label">Position X</label>
-                            <input id="setting_pad_x" type="range" class="form-range" min="-1.0" max="1.0" step="0.001" value="0" onchange="updateSettings()" oninput="updateSettings()" />
+                            <input id="setting_pad_x" type="range" class="form-range" min="-1.0" max="1.0" step="0.001" value="0" onchange="updateSettings(1)" oninput="updateSettings(1)" />
 
                             <label for="setting_pad_y" class="form-label">Position Y</label>
-                            <input id="setting_pad_y" type="range" class="form-range" min="-1.0" max="1.0" step="0.001" value="0" onchange="updateSettings()" oninput="updateSettings()" />
+                            <input id="setting_pad_y" type="range" class="form-range" min="-1.0" max="1.0" step="0.001" value="0" onchange="updateSettings(1)" oninput="updateSettings(1)" />
 
                             <label for="setting_scale" class="form-label">Scale</label>
-                            <input id="setting_scale" type="range" class="form-range" min="0.01" max="5.0" step="0.01" value="1.0" onchange="updateSettings()" oninput="updateSettings()" />
+                            <input id="setting_scale" type="range" class="form-range" min="0.01" max="5.0" step="0.01" value="1.0" onchange="updateSettings(1)" oninput="updateSettings(1)" />
                         </form>
                     </div>
                     <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
