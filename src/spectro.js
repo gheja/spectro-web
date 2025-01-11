@@ -41,6 +41,9 @@ var _scopeCtx
 var _scopeMode
 var _p = 0.2 // width of the window, in virtual coordinate unit
 
+// the correction factor for ...
+var _scopeDataCorrectionFactors = []
+
 // the DOM object storing the image
 var _spectrumImageImg
 
@@ -143,7 +146,8 @@ function spectroInit()
     // load the image in async, check later
     _spectrumImageImg = document.createElement("img")
     _spectrumImageImg.src = _spectrumImageOverlaySettings.url
-
+    
+    setCorrectionFactors(0.0)
     setScopeMode(1)
 
     window.requestAnimationFrame(spectroFrame)
@@ -265,6 +269,44 @@ function normalize(arr)
     return result
 }
 
+// WIP, don't use
+function setCorrectionFactors(n)
+{
+    var on = (n != 0.0)
+
+    document.getElementById('correction-on-button').disabled = (on ? 'disabled' : '')
+    document.getElementById('correction-off-button').disabled = (on ? '' : 'disabled')
+
+    _scopeDataCorrectionFactors = []
+
+    for (var i=0; i<SAMPLE_COUNT; i++)
+    {
+        _scopeDataCorrectionFactors.push(1.0)
+    }
+
+    if (n == 0.0)
+    {
+        return
+    }
+
+    var a, b, c
+
+    for (var i=0; i<SAMPLE_COUNT; i++)
+    {
+        b = (0.5 + _referenceScopeData[i])
+        c = (0.5 + Math.max(_scopeData[i], 0.15))
+        a = b / c
+
+        if (a > 100.0)
+        {
+            // console.log(a, b, c)
+        }
+        _scopeDataCorrectionFactors[i] = a
+    }
+
+    // console.log(_scopeDataCorrectionFactors)
+}
+
 function processData()
 {
     var a = []
@@ -294,6 +336,8 @@ function processData()
             {
                 _scopeData[i] = 0
             }
+
+            _scopeData[i] *= _scopeDataCorrectionFactors[i]
         }
     }
     else
