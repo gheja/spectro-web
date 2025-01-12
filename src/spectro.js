@@ -516,9 +516,23 @@ function wavelengthToSamplePos(wavelength)
 }
 
 /** Draw a marker at a position on the scope, displaying the wavelength above it, aligned to left/center/right */
-function drawWavelengthMarker(position, align)
+function drawWavelengthMarker(position)
 {
-    var n = Math.round(_scopeSettings.middle + ((position - 1000) / 2000) * _scopeSettings.width)
+    var n = Math.round(samplePosToWavelength(position))
+    var align
+
+    if (position < 100)
+    {
+        align = "left"
+    }
+    else if (position > 2000 - 100)
+    {
+        align = "right"
+    }
+    else
+    {
+        align = "center"
+    }
 
     _scopeCtx.font = "32px Arial"
     _scopeCtx.fillStyle = "#fff"
@@ -536,9 +550,8 @@ function drawWavelengthMarker(position, align)
 
 function drawAllWavelengthMarkers()
 {
-    drawWavelengthMarker(0, "left")
-    drawWavelengthMarker(1000, "center")
-    drawWavelengthMarker(2000, "right")
+    drawWavelengthMarker(wavelengthToSamplePos(380))
+    drawWavelengthMarker(wavelengthToSamplePos(750))
 }
 
 /** Draw the updated scope */
