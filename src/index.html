@@ -149,7 +149,13 @@
                         </form>
                     </div>
                     <div class="tab-pane fade" id="inspect-page" role="tabpanel" aria-labelledby="inspect-page-tab">
-                        TODO: Inspect tools
+                        <p>
+                            <label for="inspect_slide" class="form-label">Slide</label>
+                            <input id="inspect_slide" type="range" class="form-range" min="-1000" max="1000" step="0.1" value="0.0" onchange="updateSettings(3)" oninput="updateSettings(3)" />
+
+                            <label for="inspect_scale" class="form-label">Scale</label>
+                            <input id="inspect_scale" type="range" class="form-range" min="0.1" max="10.0" step="0.01" value="1.0" onchange="updateSettings(3)" oninput="updateSettings(3)" />
+                    </p>
                     </div>
                     <div class="tab-pane fade" id="more-page" role="tabpanel" aria-labelledby="more-page-tab">
                         TODO: Compose, etc.

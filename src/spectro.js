@@ -16,6 +16,11 @@ var _calibrationSettings = {
     scale: 1.0,
 }
 
+var _inspectSettings = {
+    padX: 0,
+    scale: 1.0,
+}
+
 // the scope is tuned the visible spectrum by default
 var _scopeSettings = {
     middle: 565,
@@ -87,6 +92,10 @@ function updateSettings(newScopeMode)
     {
         _referenceScopeData = normalize(REFERENCE_SPECTRUMS[a].values)
     }
+
+    // inspect stuffs
+    _inspectSettings.padX = parseFloat(document.getElementById('inspect_slide').value)
+    _inspectSettings.scale = parseFloat(document.getElementById('inspect_scale').value)
 }
 
 /** Render the preview with the overlays, gather the data, process it and then display it */
