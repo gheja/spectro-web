@@ -104,6 +104,8 @@ function spectroRenderAndProcess()
 function setSource(source)
 {
     _source = source
+
+    updateSettings(1)
 }
 
 /** Checks if source is valid, can be used to skip processing if not */
