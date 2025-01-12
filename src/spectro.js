@@ -505,6 +505,16 @@ function drawOverlay()
 */
 }
 
+function samplePosToWavelength(position)
+{
+    return _scopeSettings.middle + ((position - 1000) / 2000) * _scopeSettings.width
+}
+
+function wavelengthToSamplePos(wavelength)
+{
+    return ((wavelength - _scopeSettings.middle) / _scopeSettings.width) * 2000 + 1000
+}
+
 /** Draw a marker at a position on the scope, displaying the wavelength above it, aligned to left/center/right */
 function drawWavelengthMarker(position, align)
 {
