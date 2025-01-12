@@ -188,13 +188,6 @@ function ctxStroke(ctx, width, color, pattern)
     ctx.stroke()
 }
 
-/** Update the parameters of the canvas based on the source */
-function updateCanvasProperties()
-{
-    _imageCanvas.width = _cameraVideo.videoWidth
-    _imageCanvas.height = _cameraVideo.videoHeight
-}
-
 /** Update the variables needed for coordinate projection */
 function updateImageProperties()
 {
