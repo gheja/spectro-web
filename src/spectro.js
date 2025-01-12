@@ -31,12 +31,18 @@ var _spectrumImageOverlaySettings = {
 
 /** The source object to get the image from */
 var _source = null
+var _sourcePaused = false
 
 var _pixelValues = []
 var _scopeData = []
 var _referenceScopeData = []
+// a buffer to hold the latest frame from the source
+var _bufferCanvas
+var _bufferCtx
+// the preview
 var _imageCanvas
 var _imageCtx
+// the main scope
 var _scopeCanvas
 var _scopeCtx
 var _scopeMode
@@ -91,9 +97,15 @@ function spectroRenderAndProcess()
         return
     }
 
-    _imageCtx.drawImage(_cameraVideo, 0, 0)
+    if (!_sourcePaused)
+    {
+        _bufferCtx.drawImage(_cameraVideo, 0, 0)
+        updateImageProperties()
+    }
 
+    _imageCtx.drawImage(_bufferCanvas, 0, 0)
     updateImageProperties()
+
     extractImageData()
     processData()
     drawOverlay()
@@ -105,7 +117,20 @@ function setSource(source)
 {
     _source = source
 
+    // start the source processing when switching
+    if (_sourcePaused)
+    {
+        togglePause()
+    }
+
     updateSettings(1)
+}
+
+function togglePause()
+{
+    _sourcePaused = ! _sourcePaused
+
+    document.getElementById("source-pause-button").innerHTML = _sourcePaused ? "Resume" : "Pause"
 }
 
 /** Checks if source is valid, can be used to skip processing if not */
@@ -139,6 +164,9 @@ function spectroFrame()
 /** Initialize everything and start the rendering */
 function spectroInit()
 {
+    _bufferCanvas = document.createElement('canvas')
+    _bufferCtx = _bufferCanvas.getContext('2d')
+
     _imageCanvas = document.getElementById('canvas1')
     _imageCtx = _imageCanvas.getContext('2d')
 
@@ -191,10 +219,16 @@ function ctxStroke(ctx, width, color, pattern)
 /** Update the variables needed for coordinate projection */
 function updateImageProperties()
 {
-    if (_imageCanvas.width != _source.videoWidth || _imageCanvas.height != _source.videoHeight)
+    if (_bufferCanvas.width != _source.videoWidth || _bufferCanvas.height != _source.videoHeight)
     {
-        _imageCanvas.width = _source.videoWidth
-        _imageCanvas.height = _source.videoHeight
+        _bufferCanvas.width = _source.videoWidth
+        _bufferCanvas.height = _source.videoHeight
+    }
+
+    if (_imageCanvas.width != _bufferCanvas.width || _imageCanvas.height != _bufferCanvas.height)
+    {
+        _imageCanvas.width = _bufferCanvas.width
+        _imageCanvas.height = _bufferCanvas.height
     }
 
     _imgCenterX = _imageCanvas.width / 2
@@ -389,7 +423,9 @@ function processData()
 /** Draw the overlay over the processed image */
 function drawOverlay()
 {
-    // NOTE: this overlay is being drawn directly on the image we processed
+    // NOTE: this overlay is being drawn directly on the image we processed, so
+    // no further sampling can be done. although this image is copied from the
+    // buffer, so that is still available
 
     _imageCtx.lineCap = "round"
     _imageCtx.lineJoin = "round"
