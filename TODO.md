@@ -1,8 +1,8 @@
 A few things I am probably planning to do, but no promises.
 
   - [ ] save settings to local storage and load them on start
-  - [ ] pause the scope
-  - [ ] wavelength info on the scope
+  - [x] pause the scope
+  - [x] wavelength info on the scope
   - [x]] add the real colors for scope
   - [x] reference spectrum (load a known for calibration)
   - [/] spectrum value correction (make the current spectrum match the reference using multipliers)
@@ -16,3 +16,4 @@ A few things I am probably planning to do, but no promises.
   - [ ] load source from video upload
   - [ ] load source from picture upload
   - [ ] load source from clipboard
+  - [ ] add some padding to the right side of the setup page so can be scrolled more easily on touch screen
