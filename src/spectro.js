@@ -515,6 +515,13 @@ function drawWavelengthMarker(position, align)
     _scopeCtx.stroke()
 }
 
+function drawAllWavelengthMarkers()
+{
+    drawWavelengthMarker(0, "left")
+    drawWavelengthMarker(1000, "center")
+    drawWavelengthMarker(2000, "right")
+}
+
 /** Draw the updated scope */
 function drawScope()
 {
@@ -620,6 +627,8 @@ function drawScopeV2()
     _scopeCtx.strokeStyle = "#eee"
     _scopeCtx.lineWidth = 2
     _scopeCtx.stroke()
+
+    drawAllWavelengthMarkers()
 }
 
 /** Draw the final scope */
@@ -653,7 +662,5 @@ function drawScopeV3()
     _scopeCtx.lineWidth = 2
     _scopeCtx.stroke()
 
-    drawWavelengthMarker(0, "left")
-    drawWavelengthMarker(1000, "center")
-    drawWavelengthMarker(2000, "right")
+    drawAllWavelengthMarkers()
 }
