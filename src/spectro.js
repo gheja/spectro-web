@@ -465,6 +465,25 @@ function drawOverlay()
 */
 }
 
+/** Draw a marker at a position on the scope, displaying the wavelength above it, aligned to left/center/right */
+function drawWavelengthMarker(position, align)
+{
+    var n = Math.round(_scopeSettings.middle + ((position - 1000) / 2000) * _scopeSettings.width)
+
+    _scopeCtx.font = "32px Arial"
+    _scopeCtx.fillStyle = "#fff"
+    _scopeCtx.textAlign = align
+    _scopeCtx.fillText(n, position, 36)
+    _scopeCtx.textAlign = "start"
+
+    _scopeCtx.lineWidth = 2
+    _scopeCtx.strokeStyle = "#fff6"
+    _scopeCtx.beginPath()
+    _scopeCtx.moveTo(position, 42)
+    _scopeCtx.lineTo(position, 300)
+    _scopeCtx.stroke()
+}
+
 /** Draw the updated scope */
 function drawScope()
 {
@@ -602,4 +621,8 @@ function drawScopeV3()
     _scopeCtx.strokeStyle = "#fff"
     _scopeCtx.lineWidth = 2
     _scopeCtx.stroke()
+
+    drawWavelengthMarker(0, "left")
+    drawWavelengthMarker(1000, "center")
+    drawWavelengthMarker(2000, "right")
 }
