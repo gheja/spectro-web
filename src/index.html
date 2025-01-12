@@ -90,6 +90,16 @@
 
                                 <label for="setting_scale" class="form-label">Scale</label>
                                 <input id="setting_scale" type="range" class="form-range" min="0.01" max="5.0" step="0.01" value="1.0" onchange="updateSettings(1)" oninput="updateSettings(1)" />
+
+                                <label for="setting_value_conversion" class="form-label">RGB value conversion method</label>
+                                <select id="setting_value_conversion" class="form-select" onchange="updateSettings(1)" oninput="updateSettings(1)" onmouseenter="updateSettings(1)">
+                                    <option selected value="1">RGB average</option>
+                                    <option value="2">Photometric/digital ITU BT.709</option>
+                                    <option value="3">Digital ITU BT.601</option>
+                                    <option value="4">HSL, Luminance</option>
+                                    <option value="5">HSV, Value</option>
+                                </select>
+
                             </div>
 
                             <div onmouseenter="setScopeMode(2)">

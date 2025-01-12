@@ -8,6 +8,7 @@ var _settings = {
     padX: 0,
     padY: 0,
     scale: 1.0,
+    valueConversionMethod: 1,
 }
 
 var _calibrationSettings = {
@@ -65,6 +66,7 @@ function updateSettings(newScopeMode)
     _settings.padX = parseFloat(document.getElementById('setting_pad_x').value)
     _settings.padY = parseFloat(document.getElementById('setting_pad_y').value)
     _settings.scale = parseFloat(document.getElementById('setting_scale').value)
+    _settings.valueConversionMethod = parseInt(document.getElementById('setting_value_conversion').value)
 
     // calibration stuffs
     _calibrationSettings.padX = parseFloat(document.getElementById('calibration_slide').value)
@@ -310,10 +312,51 @@ function setCorrectionFactors(n)
 function processData()
 {
     var a = []
+    var b
+    var c
 
-    for (var i=0; i<SAMPLE_COUNT; i++)
+    if (_settings.valueConversionMethod == 1)
     {
-        a.push(_pixelValues[i][0] + _pixelValues[i][1] + _pixelValues[i][2])
+        // RGB average
+        for (var i=0; i<SAMPLE_COUNT; i++)
+        {
+            a.push(_pixelValues[i][0] + _pixelValues[i][1] + _pixelValues[i][2])
+        }
+    }
+    else if (_settings.valueConversionMethod == 2)
+    {
+        // Photometric/digital ITU BT.709
+        for (var i=0; i<SAMPLE_COUNT; i++)
+        {
+            a.push(_pixelValues[i][0] * 0.2126 + _pixelValues[i][1] * 0.7152 + _pixelValues[i][2] * 0.0722)
+        }
+    }
+    else if (_settings.valueConversionMethod == 3)
+    {
+        // Digital ITU BT.601
+        for (var i=0; i<SAMPLE_COUNT; i++)
+        {
+            a.push(_pixelValues[i][0] * 0.299 + _pixelValues[i][1] * 0.587 + _pixelValues[i][2] * 0.114)
+        }
+    }
+    else if (_settings.valueConversionMethod == 4)
+    {
+        // HSL, Luminance
+        for (var i=0; i<SAMPLE_COUNT; i++)
+        {
+            a.push(
+                Math.min(_pixelValues[i][0], _pixelValues[i][1], _pixelValues[i][2]) +
+                Math.max(_pixelValues[i][0], _pixelValues[i][1], _pixelValues[i][2])
+            )
+        }
+    }
+    else if (_settings.valueConversionMethod == 5)
+    {
+        // HSV, Value
+        for (var i=0; i<SAMPLE_COUNT; i++)
+        {
+            a.push(Math.max(_pixelValues[i][0], _pixelValues[i][1], _pixelValues[i][2]))
+        }
     }
 
     // adjust for calibration settings
