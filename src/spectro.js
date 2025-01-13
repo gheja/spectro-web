@@ -13,6 +13,7 @@ var _settings = {
     padY: 0,
     scale: 1.0,
     valueConversionMethod: 1,
+    smoothing: 0.0,
 }
 
 var _calibrationSettings = {
@@ -82,6 +83,7 @@ function updateSettings(newScopeMode)
     _settings.padY = parseFloat(document.getElementById('setting_pad_y').value)
     _settings.scale = parseFloat(document.getElementById('setting_scale').value)
     _settings.valueConversionMethod = parseInt(document.getElementById('setting_value_conversion').value)
+    _settings.smoothing = parseFloat(document.getElementById('setting_smoothing').value)
 
     // calibration stuffs
     _calibrationSettings.padX = parseFloat(document.getElementById('calibration_slide').value)
@@ -112,7 +114,9 @@ function spectroRenderAndProcess()
 
     if (!_sourcePaused)
     {
+        _bufferCtx.globalAlpha = 1.0 - _settings.smoothing
         _bufferCtx.drawImage(_cameraVideo, 0, 0)
+        _bufferCtx.globalAlpha = 1.0
         updateImageProperties()
     }
 

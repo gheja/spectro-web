@@ -101,6 +101,9 @@
                                     <option value="5" selected>HSV, Value</option>
                                 </select>
 
+                                <label for="setting_smoothing" class="form-label">Scale</label>
+                                <input id="setting_smoothing" type="range" class="form-range" min="0.0" max="1.0" step="0.01" value="0.0" onchange="updateSettings(1)" oninput="updateSettings(1)" />
+
                             </div>
 
                             <div onmouseenter="setScopeMode(2)">
