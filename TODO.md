@@ -1,9 +1,10 @@
 A few things I am probably planning to do, but no promises.
 
+  - [ ] test video showing CFL, incandescent, etc
   - [ ] save settings to local storage and load them on start
   - [x] pause the scope
   - [x] wavelength info on the scope
-  - [x]] add the real colors for scope
+  - [x] add the real colors for scope
   - [x] reference spectrum (load a known for calibration)
   - [/] spectrum value correction (make the current spectrum match the reference using multipliers)
   - [ ] multiple profiles
@@ -13,6 +14,7 @@ A few things I am probably planning to do, but no promises.
     - [ ] use the user specified camera (even the same one (can be useful if the scope is paused))
   - [ ] save the spectrum
   - [ ] load the spectrum (in paused mode? for reference?)
+  - [ ] auto corss-reference the current spectrum to stored/reference ones, display the match if strong match
   - [ ] load source from video upload
   - [ ] load source from picture upload
   - [ ] load source from clipboard
