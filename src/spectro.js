@@ -507,12 +507,12 @@ function drawOverlay()
 
 function samplePosToWavelength(position)
 {
-    return _scopeSettings.middle + ((position - 1000) / 2000) * _scopeSettings.width
+    return _scopeSettings.middle + (((position - 1000) / _inspectSettings.scale - _inspectSettings.padX) / 2000) * _scopeSettings.width
 }
 
 function wavelengthToSamplePos(wavelength)
 {
-    return ((wavelength - _scopeSettings.middle) / _scopeSettings.width) * 2000 + 1000
+    return (((wavelength - _scopeSettings.middle) / _scopeSettings.width) * 2000 + _inspectSettings.padX) * _inspectSettings.scale + 1000
 }
 
 /** Draw a marker at a position on the scope, displaying the wavelength above it, aligned to left/center/right */
@@ -673,19 +673,28 @@ function drawScopeV3()
 
     _scopeCtx.beginPath()
     _scopeCtx.moveTo(0, 300)
+    var j
     for (var i=0; i<SAMPLE_COUNT; i++)
     {
-        _scopeCtx.lineTo(i, 300 - _scopeData[i] * 255)
+        // adjust for inspect position
+        j = (i - 1000) / _inspectSettings.scale + 1000
+        j = j - _inspectSettings.padX
+        j = Math.round(j)
+
+        _scopeCtx.lineTo(i, 300 - _scopeData[j] * 255)
     }
 
     _scopeCtx.lineTo(2000, 300)
+
+    var imgLeft = Math.round(wavelengthToSamplePos(_spectrumImageOverlaySettings.middle - _spectrumImageOverlaySettings.width / 2))
+    var imgWidth = 2000 * _inspectSettings.scale
 
     // clip the image to the spectrum
     _scopeCtx.save()
     _scopeCtx.clip()
     if (_spectrumImageImg.complete)
     {
-        _scopeCtx.drawImage(_spectrumImageImg, 0, 0, _spectrumImageImg.width, _spectrumImageImg.height, 0, 0, 2000, 300)
+        _scopeCtx.drawImage(_spectrumImageImg, 0, 0, _spectrumImageImg.width, _spectrumImageImg.height, imgLeft, 0, imgWidth, 300)
     }
     _scopeCtx.restore()
 
