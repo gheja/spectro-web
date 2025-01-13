@@ -692,6 +692,8 @@ function drawScopeV3()
     // clip the image to the spectrum
     _scopeCtx.save()
     _scopeCtx.clip()
+    _scopeCtx.fillStyle = "#000"
+    _scopeCtx.fillRect(0, 0, 2000, 300)
     if (_spectrumImageImg.complete)
     {
         _scopeCtx.drawImage(_spectrumImageImg, 0, 0, _spectrumImageImg.width, _spectrumImageImg.height, imgLeft, 0, imgWidth, 300)
