@@ -21,3 +21,4 @@ A few things I am probably planning to do, but no promises.
   - [ ] bug: start and end coordinates in Inspect scope drawing are fixed to corners, weird display
   - [ ] make SCOPE_WIDTH and SAMPLE_COUNT independent (scope rendering now does not scale the data)
   - [ ] make SCOPE_HEIGHT adjustable (scope rendering now uses the pixel value 0..255 directly which works with 300 px height)
+  - [ ] auto peak detection and wavelength markers for peaks
