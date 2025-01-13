@@ -7,6 +7,8 @@ A few things I am probably planning to do, but no promises.
   - [x] add the real colors for scope
   - [x] reference spectrum (load a known for calibration)
   - [/] spectrum value correction (make the current spectrum match the reference using multipliers)
+  - [x] smoothing of wave by overlaying multiple frames
+  - [ ] add warning about clipping source (RGB) values
   - [ ] multiple profiles
   - [ ] reconstructed color from the spectrum shown
   - composite shots
@@ -20,7 +22,9 @@ A few things I am probably planning to do, but no promises.
   - [ ] load source from clipboard
   - [x] add some padding to the right side of the setup page so can be scrolled more easily on touch screen
   - [x] wavelength markers
+  - [ ] custom wavelenth markers, editing them
   - [ ] bug: start and end coordinates in Inspect scope drawing are fixed to corners, weird display
   - [ ] make SCOPE_WIDTH and SAMPLE_COUNT independent (scope rendering now does not scale the data)
   - [ ] make SCOPE_HEIGHT adjustable (scope rendering now uses the pixel value 0..255 directly which works with 300 px height)
   - [ ] auto peak detection and wavelength markers for peaks
+  - [ ] messages when (auto)changing scope modes
