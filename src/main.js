@@ -147,6 +147,13 @@ function calibrationDone()
     document.getElementById("inspect-page-tab").click()
 }
 
+function inspectResetZoom()
+{
+    document.getElementById("inspect_slide").value = 0
+    document.getElementById("inspect_scale").value = 1.0
+    updateSettings(3)
+}
+
 /** Initialize all the required stuffs */
 function init()
 {
