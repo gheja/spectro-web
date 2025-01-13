@@ -1,7 +1,11 @@
 "use strict";
 
-/** How many samples should be taken from the source image for the spectral data */
-const SAMPLE_COUNT = 2000
+const SCOPE_WIDTH = 1920
+const SCOPE_HEIGHT = 300 // changing would need to adjust for sample height when displaying the scope
+
+/** How many samples should be taken from the source image for the spectral data.
+ *  This needs to match the scope width for now as scope rendering does not scale the data. */
+const SAMPLE_COUNT = SCOPE_WIDTH
 
 var _settings = {
     rotation: 0,
@@ -180,8 +184,8 @@ function spectroInit()
     _imageCtx = _imageCanvas.getContext('2d')
 
     _scopeCanvas = document.getElementById('canvas2')
-    _scopeCanvas.width = 2000
-    _scopeCanvas.height = 300
+    _scopeCanvas.width = SCOPE_WIDTH
+    _scopeCanvas.height = SCOPE_HEIGHT
     _scopeCtx = _scopeCanvas.getContext('2d')
 
     // load the image in async, check later
@@ -220,7 +224,7 @@ function projectCoords(x, y)
 function ctxStroke(ctx, width, color, pattern)
 {
     ctx.setLineDash(pattern)
-    ctx.lineWidth = width * (_imgScale / 1000)
+    ctx.lineWidth = width * (_imgScale / (SCOPE_WIDTH/2))
     ctx.strokeStyle = color
     ctx.stroke()
 }
@@ -404,12 +408,12 @@ function processData()
         for (var i=0; i<SAMPLE_COUNT; i++)
         {
             // calculate the correct position
-            j = (i - 1000) / _calibrationSettings.scale + 1000
+            j = (i - SAMPLE_COUNT/2) / _calibrationSettings.scale + SAMPLE_COUNT/2
             j = j - _calibrationSettings.padX
             j = Math.round(j)
 
             // filter invalid data points
-            if (j >= 0 && j < 2000)
+            if (j >= 0 && j < SCOPE_WIDTH)
             {
                 _scopeData[i] = a[j]
             }
@@ -507,12 +511,12 @@ function drawOverlay()
 
 function samplePosToWavelength(position)
 {
-    return _scopeSettings.middle + (((position - 1000) / _inspectSettings.scale - _inspectSettings.padX) / 2000) * _scopeSettings.width
+    return _scopeSettings.middle + (((position - SCOPE_WIDTH/2) / _inspectSettings.scale - _inspectSettings.padX) / SCOPE_WIDTH) * _scopeSettings.width
 }
 
 function wavelengthToSamplePos(wavelength)
 {
-    return (((wavelength - _scopeSettings.middle) / _scopeSettings.width) * 2000 + _inspectSettings.padX) * _inspectSettings.scale + 1000
+    return (((wavelength - _scopeSettings.middle) / _scopeSettings.width) * SCOPE_WIDTH + _inspectSettings.padX) * _inspectSettings.scale + SCOPE_WIDTH/2
 }
 
 /** Draw a marker at a position on the scope, displaying the wavelength above it, aligned to left/center/right */
@@ -525,7 +529,7 @@ function drawWavelengthMarker(wavelength)
     {
         align = "left"
     }
-    else if (position > 2000 - 100)
+    else if (position > SCOPE_WIDTH - 100)
     {
         align = "right"
     }
@@ -544,7 +548,7 @@ function drawWavelengthMarker(wavelength)
     _scopeCtx.strokeStyle = "#fff6"
     _scopeCtx.beginPath()
     _scopeCtx.moveTo(position, 42)
-    _scopeCtx.lineTo(position, 300)
+    _scopeCtx.lineTo(position, SCOPE_HEIGHT)
     _scopeCtx.stroke()
 }
 
@@ -577,40 +581,40 @@ function drawScopeV1()
     _scopeCtx.lineWidth = 2
     
     _scopeCtx.fillStyle = "#000"
-    _scopeCtx.fillRect(0, 0, 2000, 300)
+    _scopeCtx.fillRect(0, 0, SCOPE_WIDTH, SCOPE_HEIGHT)
 
     _scopeCtx.beginPath()
-    _scopeCtx.moveTo(0, 300)
+    _scopeCtx.moveTo(0, SCOPE_HEIGHT)
     for (var i=0; i<SAMPLE_COUNT; i++)
     {
-        _scopeCtx.lineTo(i, 300 - _pixelValues[i][0])
+        _scopeCtx.lineTo(i, SCOPE_HEIGHT - _pixelValues[i][0])
     }
     _scopeCtx.strokeStyle = "#a00"
     _scopeCtx.stroke()
 
     _scopeCtx.beginPath()
-    _scopeCtx.moveTo(0, 300)
+    _scopeCtx.moveTo(0, SCOPE_HEIGHT)
     for (var i=0; i<SAMPLE_COUNT; i++)
     {
-        _scopeCtx.lineTo(i, 300 - _pixelValues[i][1])
+        _scopeCtx.lineTo(i, SCOPE_HEIGHT - _pixelValues[i][1])
     }
     _scopeCtx.strokeStyle = "#0a0"
     _scopeCtx.stroke()
 
     _scopeCtx.beginPath()
-    _scopeCtx.moveTo(0, 300)
+    _scopeCtx.moveTo(0, SCOPE_HEIGHT)
     for (var i=0; i<SAMPLE_COUNT; i++)
     {
-        _scopeCtx.lineTo(i, 300 - _pixelValues[i][2])
+        _scopeCtx.lineTo(i, SCOPE_HEIGHT - _pixelValues[i][2])
     }
     _scopeCtx.strokeStyle = "#00a"
     _scopeCtx.stroke()
 
     _scopeCtx.beginPath()
-    _scopeCtx.moveTo(0, 300)
+    _scopeCtx.moveTo(0, SCOPE_HEIGHT)
     for (var i=0; i<SAMPLE_COUNT; i++)
     {
-        _scopeCtx.lineTo(i, 300 - _scopeData[i] * 255)
+        _scopeCtx.lineTo(i, SCOPE_HEIGHT - _scopeData[i] * 255)
     }
     _scopeCtx.strokeStyle = "#eee"
     _scopeCtx.stroke()
@@ -620,25 +624,25 @@ function drawScopeV1()
 function drawScopeV2()
 {
     _scopeCtx.fillStyle = "#323"
-    _scopeCtx.fillRect(0, 0, 2000, 300)
+    _scopeCtx.fillRect(0, 0, SCOPE_WIDTH, SCOPE_HEIGHT)
 
     if (_referenceScopeData.length > 0)
     {
         _scopeCtx.beginPath()
-        _scopeCtx.moveTo(0, 300)
+        _scopeCtx.moveTo(0, SCOPE_HEIGHT)
         for (var i=0; i<SAMPLE_COUNT; i++)
         {
-            _scopeCtx.lineTo(i, 300 - _referenceScopeData[i] * 255)
+            _scopeCtx.lineTo(i, SCOPE_HEIGHT - _referenceScopeData[i] * 255)
         }
 
-        _scopeCtx.lineTo(2000, 300)
+        _scopeCtx.lineTo(SCOPE_WIDTH, SCOPE_HEIGHT)
 
         // clip the image to the reference spectrum
         _scopeCtx.save()
         _scopeCtx.clip()
         if (_spectrumImageImg.complete)
         {
-            _scopeCtx.drawImage(_spectrumImageImg, 0, 0, _spectrumImageImg.width, _spectrumImageImg.height, 0, 0, 2000, 300)
+            _scopeCtx.drawImage(_spectrumImageImg, 0, 0, _spectrumImageImg.width, _spectrumImageImg.height, 0, 0, SCOPE_WIDTH, SCOPE_HEIGHT)
         }
         _scopeCtx.restore()
 
@@ -650,10 +654,10 @@ function drawScopeV2()
 
     // draw the spectrum
     _scopeCtx.beginPath()
-    _scopeCtx.moveTo(0, 300)
+    _scopeCtx.moveTo(0, SCOPE_HEIGHT)
     for (var i=0; i<SAMPLE_COUNT; i++)
     {
-        _scopeCtx.lineTo(i, 300 - _scopeData[i] * 255)
+        _scopeCtx.lineTo(i, SCOPE_HEIGHT - _scopeData[i] * 255)
     }
 
     _scopeCtx.strokeStyle = "#eee"
@@ -667,36 +671,36 @@ function drawScopeV2()
 function drawScopeV3()
 {
     _scopeCtx.fillStyle = "#222"
-    _scopeCtx.fillRect(0, 0, 2000, 300)
+    _scopeCtx.fillRect(0, 0, SCOPE_WIDTH, SCOPE_HEIGHT)
 
     _scopeCtx.lineWidth = 2
 
     _scopeCtx.beginPath()
-    _scopeCtx.moveTo(0, 300)
+    _scopeCtx.moveTo(0, SCOPE_HEIGHT)
     var j
     for (var i=0; i<SAMPLE_COUNT; i++)
     {
         // adjust for inspect position
-        j = (i - 1000) / _inspectSettings.scale + 1000
+        j = (i - SAMPLE_COUNT/2) / _inspectSettings.scale + SAMPLE_COUNT/2
         j = j - _inspectSettings.padX
         j = Math.round(j)
 
-        _scopeCtx.lineTo(i, 300 - _scopeData[j] * 255)
+        _scopeCtx.lineTo(i, SCOPE_HEIGHT - _scopeData[j] * 255)
     }
 
-    _scopeCtx.lineTo(2000, 300)
+    _scopeCtx.lineTo(SCOPE_WIDTH, SCOPE_HEIGHT)
 
     var imgLeft = Math.round(wavelengthToSamplePos(_spectrumImageOverlaySettings.middle - _spectrumImageOverlaySettings.width / 2))
-    var imgWidth = 2000 * _inspectSettings.scale
+    var imgWidth = SCOPE_WIDTH * _inspectSettings.scale
 
     // clip the image to the spectrum
     _scopeCtx.save()
     _scopeCtx.clip()
     _scopeCtx.fillStyle = "#000"
-    _scopeCtx.fillRect(0, 0, 2000, 300)
+    _scopeCtx.fillRect(0, 0, SCOPE_WIDTH, SCOPE_HEIGHT)
     if (_spectrumImageImg.complete)
     {
-        _scopeCtx.drawImage(_spectrumImageImg, 0, 0, _spectrumImageImg.width, _spectrumImageImg.height, imgLeft, 0, imgWidth, 300)
+        _scopeCtx.drawImage(_spectrumImageImg, 0, 0, _spectrumImageImg.width, _spectrumImageImg.height, imgLeft, 0, imgWidth, SCOPE_HEIGHT)
     }
     _scopeCtx.restore()
 
