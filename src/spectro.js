@@ -8,6 +8,7 @@ const SCOPE_HEIGHT = 300 // changing would need to adjust for sample height when
 const SAMPLE_COUNT = SCOPE_WIDTH
 
 var _settings = {
+    p: 0.2, // width of the window, in virtual coordinate unit (fixed)
     rotation: 0,
     padX: 0,
     padY: 0,
@@ -56,7 +57,6 @@ var _imageCtx
 var _scopeCanvas
 var _scopeCtx
 var _scopeMode
-var _p = 0.2 // width of the window, in virtual coordinate unit
 
 // the correction factor for ...
 var _scopeDataCorrectionFactors = []
@@ -256,10 +256,10 @@ function updateImageProperties()
 /** Do the extraction of the spectral data from the image */
 function extractImageData()
 {
-    _p = 0.2 * _settings.scale
+    _settings.p = 0.2 * _settings.scale
 
-    var p1 = projectCoords(-_p, 0)
-    var p2 = projectCoords(_p, 0)
+    var p1 = projectCoords(-_settings.p, 0)
+    var p2 = projectCoords(_settings.p, 0)
     var px, py, a
 
     var data = _imageCtx.getImageData(0, 0, _imageCanvas.width, _imageCanvas.height)
@@ -467,16 +467,16 @@ function drawOverlay()
     
     // vertical line
     _imageCtx.beginPath()
-    _imageCtx.moveTo(...projectCoords(-_p, 0))
-    _imageCtx.lineTo(...projectCoords(_p, 0))
+    _imageCtx.moveTo(...projectCoords(- _settings.p, 0))
+    _imageCtx.lineTo(...projectCoords(_settings.p, 0))
     ctxStroke(_imageCtx, 10, "#000", [])
     ctxStroke(_imageCtx, 5, "#fff", [])
 
     // blue marker on the left end
     _imageCtx.beginPath()
-    _imageCtx.moveTo(...projectCoords(- _p, 0))
-    _imageCtx.lineTo(...projectCoords(- _p - 0.03, -0.03))
-    _imageCtx.lineTo(...projectCoords(- _p - 0.03, +0.03))
+    _imageCtx.moveTo(...projectCoords(- _settings.p, 0))
+    _imageCtx.lineTo(...projectCoords(- _settings.p - 0.03, -0.03))
+    _imageCtx.lineTo(...projectCoords(- _settings.p - 0.03, +0.03))
     _imageCtx.closePath()
     _imageCtx.strokeStyle = "#00f"
     _imageCtx.fillStyle = "#00a"
@@ -485,9 +485,9 @@ function drawOverlay()
     
     // red marker on the right end
     _imageCtx.beginPath()
-    _imageCtx.moveTo(...projectCoords(_p, 0))
-    _imageCtx.lineTo(...projectCoords(_p + 0.03, -0.03))
-    _imageCtx.lineTo(...projectCoords(_p + 0.03, +0.03))
+    _imageCtx.moveTo(...projectCoords(_settings.p, 0))
+    _imageCtx.lineTo(...projectCoords(_settings.p + 0.03, -0.03))
+    _imageCtx.lineTo(...projectCoords(_settings.p + 0.03, +0.03))
     _imageCtx.closePath()
     _imageCtx.strokeStyle = "#f00"
     _imageCtx.fillStyle = "#a00"
@@ -497,16 +497,16 @@ function drawOverlay()
 /*
     // blue marker on the left end
     _imageCtx.beginPath()
-    _imageCtx.moveTo(...projectCoords(-_p, -0.03))
-    _imageCtx.lineTo(...projectCoords(-_p, -0.05))
+    _imageCtx.moveTo(...projectCoords(- _settings.p, -0.03))
+    _imageCtx.lineTo(...projectCoords(- _settings.p, -0.05))
     _imageCtx.closePath()
     ctxStroke(_imageCtx, 20, "#000", [])
     ctxStroke(_imageCtx, 10, "#00f", [])
     
     // red marker on the right end
     _imageCtx.beginPath()
-    _imageCtx.moveTo(...projectCoords(_p, -0.03))
-    _imageCtx.lineTo(...projectCoords(_p, -0.05))
+    _imageCtx.moveTo(...projectCoords(_settings.p, -0.03))
+    _imageCtx.lineTo(...projectCoords(_settings.p, -0.05))
     _imageCtx.closePath()
     ctxStroke(_imageCtx, 20, "#000", [])
     ctxStroke(_imageCtx, 10, "#f00", [])
