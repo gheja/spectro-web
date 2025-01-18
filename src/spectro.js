@@ -328,6 +328,25 @@ function normalize(arr)
     return result
 }
 
+/** Calculate sample position from the scope position (x coordinate),
+ *  considering Inspect settings, clamping to first and last sample */
+function scopePosToSamplePos(x)
+{
+/*
+    var result
+
+    result = (x - SAMPLE_COUNT/2) / _inspectSettings.scale + SAMPLE_COUNT/2
+    result = result - _inspectSettings.padX
+    result = Math.round(result)
+    result = Math.max(0, Math.min(SAMPLE_COUNT - 1, result)
+*/
+    return Math.max(0, Math.min(SAMPLE_COUNT - 1,
+        Math.round(
+            (x - SAMPLE_COUNT/2) / _inspectSettings.scale + SAMPLE_COUNT/2 - _inspectSettings.padX)
+        )
+    )
+}
+
 // WIP, don't use
 function setCorrectionFactors(n)
 {
@@ -422,10 +441,7 @@ function processData()
         var j
         for (var i=0; i<SAMPLE_COUNT; i++)
         {
-            // calculate the correct position
-            j = (i - SAMPLE_COUNT/2) / _calibrationSettings.scale + SAMPLE_COUNT/2
-            j = j - _calibrationSettings.padX
-            j = Math.round(j)
+            j = scopePosToSamplePos(i)
 
             // filter invalid data points
             if (j >= 0 && j < SCOPE_WIDTH)
@@ -476,10 +492,7 @@ function autoDetectPeaks()
 
         for (var x=0; x<SAMPLE_COUNT; x++)
         {
-            // adjust for inspect position
-            j = (x - SAMPLE_COUNT/2) / _inspectSettings.scale + SAMPLE_COUNT/2
-            j = j - _inspectSettings.padX
-            j = Math.round(j)
+            j = scopePosToSamplePos(x)
 
             if (highestPointValue < _scopeCopy[j])
             {
@@ -493,10 +506,7 @@ function autoDetectPeaks()
         // clear a region in the data to not place markers too close to each other
         for (var x=Math.max(0, highestPointX - AUTO_PEAK_GAP_SAMPLES); x < Math.min(SAMPLE_COUNT, highestPointX + AUTO_PEAK_GAP_SAMPLES); x++)
         {
-            // adjust for inspect position
-            j = (x - SAMPLE_COUNT/2) / _inspectSettings.scale + SAMPLE_COUNT/2
-            j = j - _inspectSettings.padX
-            j = Math.round(j)
+            j = scopePosToSamplePos(x)
             
             _scopeCopy[j] = 0
         }
@@ -755,10 +765,7 @@ function drawScopeV3()
     var j
     for (var i=0; i<SAMPLE_COUNT; i++)
     {
-        // adjust for inspect position
-        j = (i - SAMPLE_COUNT/2) / _inspectSettings.scale + SAMPLE_COUNT/2
-        j = j - _inspectSettings.padX
-        j = Math.round(j)
+        j = scopePosToSamplePos(i)
 
         _scopeCtx.lineTo(i, SCOPE_HEIGHT - _scopeData[j] * 255)
     }
