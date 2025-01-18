@@ -608,13 +608,13 @@ function drawWavelengthMarker(wavelength)
         align = "center"
     }
 
-    _scopeCtx.font = "32px Arial"
+    _scopeCtx.font = "24px Arial"
     _scopeCtx.fillStyle = "#fff"
     _scopeCtx.textAlign = align
     _scopeCtx.fillText(wavelength, position, 36)
     _scopeCtx.textAlign = "start"
 
-    _scopeCtx.lineWidth = 2
+    _scopeCtx.lineWidth = 3
     _scopeCtx.strokeStyle = "#fff6"
     _scopeCtx.beginPath()
     _scopeCtx.moveTo(position, 42)
