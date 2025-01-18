@@ -328,6 +328,25 @@ function normalize(arr)
     return result
 }
 
+/** Calculate calibrated sample position considering Calibration settings,
+ *  clamping to first and last sample */
+function toCalibratedSamplePos(x)
+{
+/*
+    var result
+
+    result = (x - SAMPLE_COUNT/2) / _calibrationSettings.scale + SAMPLE_COUNT/2
+    result = result - _calibrationSettings.padX
+    result = Math.round(result)
+    result = Math.max(0, Math.min(SAMPLE_COUNT - 1, result)
+*/
+    return Math.max(0, Math.min(SAMPLE_COUNT - 1,
+        Math.round(
+            (x - SAMPLE_COUNT/2) / _calibrationSettings.scale + SAMPLE_COUNT/2 - _calibrationSettings.padX)
+        )
+    )
+}
+
 /** Calculate sample position from the scope position (x coordinate),
  *  considering Inspect settings, clamping to first and last sample */
 function scopePosToSamplePos(x)
@@ -441,7 +460,7 @@ function processData()
         var j
         for (var i=0; i<SAMPLE_COUNT; i++)
         {
-            j = scopePosToSamplePos(i)
+            j = toCalibratedSamplePos(i)
 
             // filter invalid data points
             if (j >= 0 && j < SCOPE_WIDTH)
