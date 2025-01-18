@@ -8,6 +8,7 @@
     <link href="main.css" rel="stylesheet" />
     <script src ="reference_spectrums.js"></script>
     <script src ="main.js"></script>
+    <script src ="storage.js"></script>
     <script src ="spectro.js"></script>
   </head>
   <body>
@@ -163,7 +164,27 @@
                     </p>
                     </div>
                     <div class="tab-pane fade" id="more-page" role="tabpanel" aria-labelledby="more-page-tab">
-                        TODO: Compose, etc.
+                        <h2>
+                            Snapshots
+                        </h2>
+                        <div class="unstable">
+                            <p>
+                                <em>This part is work-in-progress, saved data might not be loadable later.</em>
+                            </p>
+                            <p>
+                                The snapshots are stored in your browser, if you clear website data they will be lost.
+                            </p>
+                            <p>
+                                Snapshots contain the settings, calibrations, latest datapoints, etc., they can be retrieved later, can be exported to CSV, etc.
+                            </p>
+                            <p>
+                                Saved snapshots:
+                            </p>
+                            <div id="snapshot_list"></div>
+                            <p>
+                                <button class="btn btn-primary" onclick="storageSaveSnapshot()">Save snapshot</button>
+                            </p>
+                        </div>
                     </div>
                   </div>
             </div>

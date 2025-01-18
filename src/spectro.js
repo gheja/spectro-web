@@ -140,6 +140,17 @@ function spectroRenderAndProcess()
     drawScope()
 }
 
+function updateAfterSnapshotWasLoaded()
+{
+    resetSource()
+
+    _sourcePaused = true
+    
+    setScopeMode(3)
+    autoDetectPeaks()
+    drawScope()
+}
+
 /** Set the source for processing */
 function setSource(source)
 {

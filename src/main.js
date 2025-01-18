@@ -161,6 +161,7 @@ function init()
     switchPage("source-pages", "source-list")
     referenceInit()
     spectroInit()
+    storageInit()
 }
 
 window.addEventListener("load", init)
