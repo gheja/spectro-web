@@ -7,6 +7,12 @@ const SCOPE_HEIGHT = 300 // changing would need to adjust for sample height when
  *  This needs to match the scope width for now as scope rendering does not scale the data. */
 const SAMPLE_COUNT = SCOPE_WIDTH
 
+// how often the auto peak detection should update (in ms)
+const AUTO_PEAK_INTERVAL_MS = 500
+
+// minimum distance between auto peak detected markers (in samples)
+const AUTO_PEAK_GAP_SAMPLES = 80
+
 var _settings = {
     p: 0.2, // width of the window, in virtual coordinate unit (fixed)
     rotation: 0,
@@ -60,6 +66,10 @@ var _scopeMode
 
 // the correction factor for ...
 var _scopeDataCorrectionFactors = []
+
+// markers for automatically detected peaks and the time of last update
+var _autoPeakMarkers = []
+var _autoPeakTimestamp = 0
 
 // the DOM object storing the image
 var _spectrumImageImg
@@ -125,6 +135,7 @@ function spectroRenderAndProcess()
 
     extractImageData()
     processData()
+    autoDetectPeaks()
     drawOverlay()
     drawScope()
 }
@@ -437,6 +448,61 @@ function processData()
     _scopeData = normalize(_scopeData)
 }
 
+function autoDetectPeaks()
+{
+    var highestPointValue
+    var highestPointX
+    var _scopeCopy
+
+    var now = performance.now()
+
+    // do not run update the markers too often
+    if (_autoPeakTimestamp + AUTO_PEAK_INTERVAL_MS > now)
+    {
+        return
+    }
+
+    _autoPeakTimestamp = now
+    _autoPeakMarkers = []
+
+    // create a copy that can be modified safely
+    _scopeCopy = _scopeData.slice()
+    var j
+
+    for (var i=0; i<5; i++)
+    {
+        highestPointValue = 0
+        highestPointX = 0
+
+        for (var x=0; x<SAMPLE_COUNT; x++)
+        {
+            // adjust for inspect position
+            j = (x - SAMPLE_COUNT/2) / _inspectSettings.scale + SAMPLE_COUNT/2
+            j = j - _inspectSettings.padX
+            j = Math.round(j)
+
+            if (highestPointValue < _scopeCopy[j])
+            {
+                highestPointValue = _scopeCopy[j]
+                highestPointX = x
+            }
+        }
+
+        _autoPeakMarkers.push(Math.round(samplePosToWavelength(highestPointX)))
+
+        // clear a region in the data to not place markers too close to each other
+        for (var x=Math.max(0, highestPointX - AUTO_PEAK_GAP_SAMPLES); x < Math.min(SAMPLE_COUNT, highestPointX + AUTO_PEAK_GAP_SAMPLES); x++)
+        {
+            // adjust for inspect position
+            j = (x - SAMPLE_COUNT/2) / _inspectSettings.scale + SAMPLE_COUNT/2
+            j = j - _inspectSettings.padX
+            j = Math.round(j)
+            
+            _scopeCopy[j] = 0
+        }
+    }
+}
+
 /** Draw the overlay over the processed image */
 function drawOverlay()
 {
@@ -560,6 +626,11 @@ function drawAllWavelengthMarkers()
 {
     drawWavelengthMarker(380)
     drawWavelengthMarker(750)
+    
+    for (var pos of _autoPeakMarkers)
+    {
+        drawWavelengthMarker(pos)
+    }
 }
 
 /** Draw the updated scope */
