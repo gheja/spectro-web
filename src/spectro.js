@@ -488,7 +488,7 @@ function autoDetectPeaks()
             }
         }
 
-        _autoPeakMarkers.push(Math.round(samplePosToWavelength(highestPointX)))
+        _autoPeakMarkers.push(Math.round(scopePosToWavelength(highestPointX)))
 
         // clear a region in the data to not place markers too close to each other
         for (var x=Math.max(0, highestPointX - AUTO_PEAK_GAP_SAMPLES); x < Math.min(SAMPLE_COUNT, highestPointX + AUTO_PEAK_GAP_SAMPLES); x++)
@@ -579,12 +579,12 @@ function drawOverlay()
 */
 }
 
-function samplePosToWavelength(position)
+function scopePosToWavelength(position)
 {
     return _scopeSettings.middle + (((position - SCOPE_WIDTH/2) / _inspectSettings.scale - _inspectSettings.padX) / SCOPE_WIDTH) * _scopeSettings.width
 }
 
-function wavelengthToSamplePos(wavelength)
+function wavelengthToScopePos(wavelength)
 {
     return (((wavelength - _scopeSettings.middle) / _scopeSettings.width) * SCOPE_WIDTH + _inspectSettings.padX) * _inspectSettings.scale + SCOPE_WIDTH/2
 }
@@ -592,7 +592,7 @@ function wavelengthToSamplePos(wavelength)
 /** Draw a marker at a position on the scope, displaying the wavelength above it, aligned to left/center/right */
 function drawWavelengthMarker(wavelength)
 {
-    var position = wavelengthToSamplePos(wavelength)
+    var position = wavelengthToScopePos(wavelength)
     var align
 
     if (position < 100)
@@ -765,7 +765,7 @@ function drawScopeV3()
 
     _scopeCtx.lineTo(SCOPE_WIDTH, SCOPE_HEIGHT)
 
-    var imgLeft = Math.round(wavelengthToSamplePos(_spectrumImageOverlaySettings.middle - _spectrumImageOverlaySettings.width / 2))
+    var imgLeft = Math.round(wavelengthToScopePos(_spectrumImageOverlaySettings.middle - _spectrumImageOverlaySettings.width / 2))
     var imgWidth = SCOPE_WIDTH * _inspectSettings.scale
 
     // clip the image to the spectrum
